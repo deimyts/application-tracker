@@ -1,4 +1,4 @@
-app = "application-tracker-97cd"
+app = "application-tracker"
 primary_region = "sjc"
 kill_signal = "SIGINT"
 kill_timeout = 5
