@@ -11,9 +11,11 @@ import {
 	time,
 } from '~/utils/timing.server.ts'
 
+import type { EmploymentRecord, User } from '@prisma/client'
+
 export async function loader({ params }: DataFunctionArgs) {
 	const timings = makeTimings('employment records loader')
-	const employee = await time(
+	const employee: User = await time(
 		() =>
 			prisma.user.findUnique({
 				where: {
@@ -31,7 +33,7 @@ export async function loader({ params }: DataFunctionArgs) {
 	if (!employee) {
 		throw new Response('Not found', { status: 404 })
 	}
-	const employmentRecords = await time(
+	const employmentRecords: EmploymentRecord[] = await time(
 		() =>
 			prisma.employmentRecord.findMany({
 				where: {
@@ -78,7 +80,7 @@ export default function EmploymentRoute() {
                 <h1>Employment History</h1>
                 <hr />
                 <ul>
-                    {data.employmentRecords.map((record) => (
+                    {data.employmentRecords.map(record => (
                         <li key={record.id} className="py-2">
                             <p>{record.title} | {record.employerName}</p>
                             <p>{formatDate(record.startDate)} – {formatDate(record.endDate)}</p>
