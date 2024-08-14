@@ -41,19 +41,19 @@ export async function loader({ params }: DataFunctionArgs) {
 				},
 				select: {
 					id: true,
-                    employerName: true,
-                    title: true,
-                    startDate: true,
-                    endDate: true,
+					employerName: true,
+					title: true,
+					startDate: true,
+					endDate: true,
 				},
 			}),
 		{ timings, type: 'find employment records' },
 	)
 
-    return json(
-        { employmentRecords },
-        { headers: { 'Server-Timing': timings.toString() } },
-    )
+	return json(
+		{ employmentRecords },
+		{ headers: { 'Server-Timing': timings.toString() } },
+	)
 }
 
 export const headers: HeadersFunction = ({ loaderHeaders, parentHeaders }) => {
@@ -62,32 +62,36 @@ export const headers: HeadersFunction = ({ loaderHeaders, parentHeaders }) => {
 	}
 }
 
-type Timestamp = string;
+type Timestamp = string
 function formatDate(date: Timestamp) {
-    const options: Intl.DateTimeFormatOptions = {
-        month: "short",
-        year: "numeric",
-        timeZone: 'UTC',
-    };
-    return new Intl.DateTimeFormat('en-US', options).format(new Date(date))
+	const options: Intl.DateTimeFormatOptions = {
+		month: 'short',
+		year: 'numeric',
+		timeZone: 'UTC',
+	}
+	return new Intl.DateTimeFormat('en-US', options).format(new Date(date))
 }
 
 export default function EmploymentRoute() {
-    const data = useLoaderData<typeof loader>()
-    return (
-        <div className="flex h-full pb-12">
-            <div className="mx-auto">
-                <h1>Employment History</h1>
-                <hr />
-                <ul>
-                    {data.employmentRecords.map(record => (
-                        <li key={record.id} className="py-2">
-                            <p>{record.title} | {record.employerName}</p>
-                            <p>{formatDate(record.startDate)} – {formatDate(record.endDate)}</p>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </div>
-    )
+	const data = useLoaderData<typeof loader>()
+	return (
+		<div className="flex h-full pb-12">
+			<div className="mx-auto">
+				<h1>Employment History</h1>
+				<hr />
+				<ul>
+					{data.employmentRecords.map(record => (
+						<li key={record.id} className="py-2">
+							<p>
+								{record.title} | {record.employerName}
+							</p>
+							<p>
+								{formatDate(record.startDate)} – {formatDate(record.endDate)}
+							</p>
+						</li>
+					))}
+				</ul>
+			</div>
+		</div>
+	)
 }
