@@ -66,6 +66,7 @@ model User {
   notes    Note[]
   roles    Role[]
   session  Session[]
+  employmentRecords EmploymentRecord[]
 }
 
 model Password {
@@ -120,4 +121,15 @@ model Note {
 
   owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   ownerId String
+}
+
+model EmploymentRecord {
+  id           String   @id @unique @default(cuid())
+  employerName String
+  startDate    DateTime
+  endDate      DateTime
+  title        String
+
+  employee   User   @relation(fields: [employeeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  employeeId String
 }
