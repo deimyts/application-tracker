@@ -11,11 +11,9 @@ import {
 	time,
 } from '~/utils/timing.server.ts'
 
-import type { EmploymentRecord, User } from '@prisma/client'
-
 export async function loader({ params }: DataFunctionArgs) {
 	const timings = makeTimings('employment records loader')
-	const employee: User = await time(
+	const employee = await time(
 		() =>
 			prisma.user.findUnique({
 				where: {
@@ -33,7 +31,7 @@ export async function loader({ params }: DataFunctionArgs) {
 	if (!employee) {
 		throw new Response('Not found', { status: 404 })
 	}
-	const employmentRecords: EmploymentRecord[] = await time(
+	const employmentRecords = await time(
 		() =>
 			prisma.employmentRecord.findMany({
 				where: {
